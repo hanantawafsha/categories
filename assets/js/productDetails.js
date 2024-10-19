@@ -10,7 +10,7 @@ const getProductsDetails = async () => {
   const { data } = await axios.get(
     `https://dummyjson.com/products/${productID}`
   );
-  console.log(data);
+ // console.log(data);
 
   return data;
 };
@@ -18,18 +18,33 @@ const getProductsDetails = async () => {
 // function to diaply productdetails by id
 
 const displayProductDetails = async () => {
-  const productDetails = await getProductsDetails();
-  //console.log(productDetails);
-  document.querySelector(".title").innerHTML = "Details page for " + productDetails.title;
+  const loader = document.querySelector(".loader-container");
+  // to add loader container
+  loader.classList.add("active");
+  try{
+    const productDetails = await getProductsDetails();
+    //console.log(productDetails);
+    document.querySelector(".title").innerHTML = "Details page for " + productDetails.title;
+  
+    const displayresult = `<div class='product'>
+      <img src="${productDetails.thumbnail}"  alt="${productDetails.thumbnail}" /> 
+          <h2> ${productDetails.title}</h2>
+  <span> ${productDetails.price}</span>
+        </div>`;
+        //console.log(displayresult);
+        document.querySelector(".productDetails .row").innerHTML = displayresult;
+        //console.log(document.querySelector(".productDetails"));
+  }
+  catch(error){
+   // console.error("Error in fetching data", error);
+    document.querySelector(".productDetails .row").innerHTML = "Error fetching product details";
 
-  const displayresult = `<div class='product'>
-    <img src="${productDetails.thumbnail}"  alt="${productDetails.thumbnail}" /> 
-        <h2> ${productDetails.title}</h2>
-<span> ${productDetails.price}</span>
-      </div>`;
-      //console.log(displayresult);
-      document.querySelector(".productDetails .row").innerHTML = displayresult;
-      //console.log(document.querySelector(".productDetails"));
+  }
+  finally{
+    // to remove loader container
+    loader.classList.remove("active");
+  }
+ 
 
 };
 

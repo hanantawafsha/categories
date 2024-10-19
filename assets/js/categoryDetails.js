@@ -14,27 +14,40 @@ const getProductsByCategory = async () => {
       // function to display product by categories
 
   const displayProductsByCategory = async () => {
-      const data = await getProductsByCategory();
+      const loader = document.querySelector(".loader-container");
+      // to add loader container
+      loader.classList.add("active");
 
      const header = ` <h2>${categoryName} Details </h2> <br> <br>`;
      console.log(header);
      document.querySelector(".categoryDetails .header").innerHTML += header;
-      console.log(data);
-     
+      //console.log(data);
+     try{
+      const data = await getProductsByCategory();
       const productDetails = data.products.map((product) => {
-      return `<div class='categoryProducts'>
-        <img src="${product.thumbnail}"  alt="${product.thumbnail}" /> 
-            <h2> ${product.title}</h2>
-    <span> ${product.price}</span>
-     <a href='productDetails.html?productID=${product.id}' target='_blank'> Details <a/> 
+        return `<div class='categoryProducts'>
+          <img src="${product.thumbnail}"  alt="${product.thumbnail}" /> 
+              <h2> ${product.title}</h2>
+      <span> ${product.price}</span>
+  
+            </div>`;
+        }).join(' ');
+        //console.log(result);
+        //      <a href='productDetails.html?productID=${product.id}' target='_blank'> Details <a/> 
 
-          </div>`;
-      }).join(' ');
-      //console.log(result);
-      console.log(productDetails);
-     //console.log(document.querySelector(".categoryDetails .row").innerHTML);
-      document.querySelector(".categoryDetails .row").innerHTML = productDetails;
-    };
+        console.log(productDetails);
+       //console.log(document.querySelector(".categoryDetails .row").innerHTML);
+        document.querySelector(".categoryDetails .row").innerHTML = productDetails;
+      }
+      catch(error){
+        console.error('Error:', error);
+      }
+      finally{
+        loader.classList.remove("active");
+
+      }
+     };
+    
   displayProductsByCategory();
 
 

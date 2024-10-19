@@ -29,11 +29,13 @@ const getProductsByCategory = async () => {
           <img src="${product.thumbnail}"  alt="${product.thumbnail}" /> 
               <h2> ${product.title}</h2>
       <span> ${product.price}</span>
+      <br>
+      <a href='productDetails.html?productID=${product.id}' target='_blank'> Details <a/> 
+
   
             </div>`;
         }).join(' ');
         //console.log(result);
-        //      <a href='productDetails.html?productID=${product.id}' target='_blank'> Details <a/> 
 
         console.log(productDetails);
        //console.log(document.querySelector(".categoryDetails .row").innerHTML);

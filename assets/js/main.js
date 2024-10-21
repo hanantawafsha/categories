@@ -28,7 +28,6 @@ const displayCategories = async () => {
       .join(" ");
     document.querySelector(" .categories .row").innerHTML = categoryResults;
     // to remove loader container
-
   } catch (error) {
     // console.error(error);
     document.querySelector(
@@ -46,7 +45,6 @@ displayCategories();
 // function to retrieve categories
 
 const getProducts = async (page) => {
-  
   // console.log(page);
   const skip = parseInt((page - 1) * limit);
   // console.log(skip);
@@ -59,68 +57,64 @@ const getProducts = async (page) => {
 // function to display product categories
 
 const displayProducts = async (page = 1) => {
-
   const loader = document.querySelector(".loader-container");
   // to add loader container
   loader.classList.add("active");
 
-try{
-  const data = await getProducts(page);
-  //console.log(data);
-  const nbrOfPages = Math.ceil(data.total / limit);
-  // console.log(nbrOfPages);
+  try {
+    const data = await getProducts(page);
+    //console.log(data);
+    const nbrOfPages = Math.ceil(data.total / limit);
+    // console.log(nbrOfPages);
 
-  //console.log(data);
+    //console.log(data);
 
-  const productResults = data.products
-    .map((product) => {
-      return `<div class='product'>
+    const productResults = data.products
+      .map((product) => {
+        return `<div class='product'>
     <img src="${product.thumbnail}"  alt="${product.thumbnail}" /> 
 
         <h2> ${product.title}</h2>
 <span> ${product.price}</span>
-      </div>`;
-    })
-    .join(" ");
+      <br>
+      <a href='productDetails.html?productID=${product.id}' target='_blank'> Details <a/> 
+      </div>`
+      })
+      .join(" ");
     document.querySelector(" .products .row").innerHTML = productResults;
-//display pagination section
-let paginationlinks = ``;
-if (page == 1) {
-  paginationlinks += `<li class="page-item"><button class="page-link">&laquo;</button></li>`;
-} else {
-  paginationlinks += `<li class="page-item"><button class="page-link"  onclick=displayProducts('${
-    parseInt(page) - 1
-  }')>&laquo;</button></li>`;
-}
-for (let i = 1; i <= nbrOfPages; i++) {
-  paginationlinks += `<li class="page-item ${
-    i == page ? "active" : ""
-  }"><button class="page-link" onclick=displayProducts('${i}')>${i}</button></li>`;
-}
-if (page == nbrOfPages) {
-  paginationlinks += `<li class="page-item"><button class="page-link" >&raquo;</button></li>`;
-} else {
-  paginationlinks += `<li class="page-item"><button class="page-link" onclick=displayProducts('${
-    parseInt(page) + 1
-  }')>&raquo;</button></li>`;
-}
-//console.log(paginationlinks);
+    //display pagination section
+    let paginationlinks = ``;
+    if (page == 1) {
+      paginationlinks += `<li class="page-item"><button class="page-link">&laquo;</button></li>`;
+    } else {
+      paginationlinks += `<li class="page-item"><button class="page-link"  onclick=displayProducts('${
+        parseInt(page) - 1
+      }')>&laquo;</button></li>`;
+    }
+    for (let i = 1; i <= nbrOfPages; i++) {
+      paginationlinks += `<li class="page-item ${
+        i == page ? "active" : ""
+      }"><button class="page-link" onclick=displayProducts('${i}')>${i}</button></li>`;
+    }
+    if (page == nbrOfPages) {
+      paginationlinks += `<li class="page-item"><button class="page-link" >&raquo;</button></li>`;
+    } else {
+      paginationlinks += `<li class="page-item"><button class="page-link" onclick=displayProducts('${
+        parseInt(page) + 1
+      }')>&raquo;</button></li>`;
+    }
+    //console.log(paginationlinks);
 
-document.querySelector(".pagination").innerHTML = paginationlinks;
-
-}
- catch (error) {
-  // console.error(error);
-  document.querySelector(
-    " .categories .row"
-  ).innerHTML = `<p> error loading categories  ${error}</p>`;
-} finally {
-  loader.classList.remove("active");
-}
+    document.querySelector(".pagination").innerHTML = paginationlinks;
+  } catch (error) {
+    // console.error(error);
+    document.querySelector(
+      " .categories .row"
+    ).innerHTML = `<p> error loading categories  ${error}</p>`;
+  } finally {
+    loader.classList.remove("active");
+  }
 };
-
-
-  
 
 // call the function to display products
 

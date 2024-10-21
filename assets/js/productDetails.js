@@ -23,14 +23,17 @@ const displayProductDetails = async () => {
   loader.classList.add("active");
   try {
     const productDetails = await getProductsDetails();
-    //console.log(productDetails);
+    console.log(productDetails);
     document.querySelector(".title").innerHTML =
       "Details page for " + productDetails.title;
 
     const displayresult = `<div class='product'>
       <img src="${productDetails.thumbnail}"  alt="${productDetails.thumbnail}" /> 
           <h2> ${productDetails.title}</h2>
+          <h3> Brand Name: ${productDetails.brand}</h3>
+          <h3>  Product category: ${productDetails.category}</h3>
           <p>${productDetails.description}</p>
+          
   <span> ${productDetails.price} $</span>
         </div>`;
     //console.log(displayresult);
